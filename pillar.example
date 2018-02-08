@@ -1,0 +1,22 @@
+# vim: ft=sls
+
+duplicity:
+  passphrase: xxxx
+  backend: ftp://user:pass@your-server.com/mybackup
+
+  # AWS credentials (only required when S3 is used)
+  aws_access_key_id: XXX
+  aws_secret_access_key: XXX
+
+  # Optional configuration settings (the values used here are the defaults)
+  remove_all_but_n_full: 5        # Keep n full backups
+  full_if_older_than: '30D'       # Create a full backup after time x
+  include_dirs: ['/etc', '/root'] # Include these directories
+  exec_pre: None                  # Command to run before taking the backup (e.g. pg_dump, etc)
+  verify: true                    # Verify backups
+
+  # Systemd timer settings
+  on_calendar: 02:00
+  nice: 10
+  io_scheduling_class: 2
+  io_scheduling_priority: 7

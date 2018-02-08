@@ -1,0 +1,9 @@
+[Unit]
+Description=duplicity backup
+
+[Service]
+Type=oneshot
+Nice={{ nice }}
+IOSchedulingClass={{ io_scheduling_class }}
+IOSchedulingPriority={{ io_scheduling_priority }}
+ExecStart=/usr/local/bin/duplicity-take-backup

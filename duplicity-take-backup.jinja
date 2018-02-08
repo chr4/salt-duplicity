@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# vim: ft=sh
+
+# Exit on error
+set -o nounset
+set -o errexit
+
+# Remove old backups
+/usr/local/bin/duplicity-exec remove-all-but-n-full {{ remove_all_but_n_full }} --force
+/usr/local/bin/duplicity-exec cleanup --force
+
+{% if exec_pre != None %}
+{{ exec_pre }}
+{%- endif %}
+
+# Backup selected directories
+/usr/local/bin/duplicity-exec \
+  --full-if-older-than {{ full_if_older_than }} \
+  --exclude-device-files / \
+{%- for dir in include_dirs %}
+  --include {{ dir }} \
+{%- endfor %}
+  --exclude '**'
+
+{% if verify %}
+# Verify backup (takes quite a while)
+/usr/local/bin/duplicity-exec verify \
+  --exclude-device-files / \
+{%- for dir in include_dirs %}
+  --include {{ dir }} \
+{%- endfor %}
+  --exclude '**'
+{%- endif %}

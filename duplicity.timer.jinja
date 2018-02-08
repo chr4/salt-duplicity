@@ -1,0 +1,9 @@
+[Unit]
+Description=Duplicity timer
+
+[Timer]
+OnCalendar={{ on_calendar }}
+Unit=duplicity.service
+
+[Install]
+WantedBy=timers.target
