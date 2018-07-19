@@ -9,3 +9,5 @@ Install and configure the Duplicity (including systemd timer/ service)
 Install the `duplicity` package as well as other required packages (by the used
 backend) and deploy and enable a systemd timer to automatically take backup
 periodically.
+
+See `pillar.example` for documentation details.
