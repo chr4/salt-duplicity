@@ -10,9 +10,9 @@ set -o errexit
 /usr/local/bin/duplicity-exec remove-all-but-n-full {{ remove_all_but_n_full }} --force
 /usr/local/bin/duplicity-exec cleanup --force
 
-{% if exec_pre != None %}
-{{ exec_pre }}
-{%- endif %}
+{% for cmd in exec_pre %}
+{{ cmd }}
+{%- endfor %}
 
 # Backup selected directories
 /usr/local/bin/duplicity-exec \

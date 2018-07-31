@@ -12,7 +12,7 @@ duplicity:
   remove_all_but_n_full: 5        # Keep n full backups
   full_if_older_than: '30D'       # Create a full backup after time x
   include_dirs: ['/etc', '/root'] # Include these directories
-  exec_pre: None                  # Command to run before taking the backup (e.g. pg_dump, etc)
+  exec_pre: ['pg_dumpall']        # Commands to run before taking the backup (e.g. pg_dump, etc)
   verify: true                    # Verify backups
 
   # Systemd timer settings
