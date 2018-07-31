@@ -20,7 +20,7 @@ fi
 # Backend configuration
 export PASSPHRASE='{{ passphrase }}'
 
-{% if aws_access_key_id is defined -%}
+{% if aws_access_key_id != 'None' -%}
 export AWS_ACCESS_KEY_ID='{{ aws_access_key_id }}'
 export AWS_SECRET_ACCESS_KEY='{{ aws_secret_access_key }}'
 export S3_USE_SIGV4=true # Use new signature version 4
