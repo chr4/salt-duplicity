@@ -41,7 +41,7 @@ duplicity:
       remove_all_but_n_full: {{ pillar['duplicity']['remove_all_but_n_full']|default(5) }}
       full_if_older_than: {{ pillar['duplicity']['full_if_older_than']|default('30D') }}
       include_dirs: {{ pillar['duplicity']['include_dirs']|default(['/etc', '/root']) }}
-      exec_pre: {{ pillar['duplicity']['exec_pre']|default() }}
+      exec_pre: {{ pillar['duplicity']['exec_pre']|default([]) }}
       verify: {{ pillar['duplicity']['verify']|default(true) }}
 
 # Install systemd timer and service
