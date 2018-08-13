@@ -23,3 +23,15 @@ duplicity:
 
   # Monit settings (used by the duplicity.monit state)
   max_backup_age: 172800          # Alert if backup is older than max_backup_age seconds
+
+  # SSH options
+  ssh:
+    known_hosts: your-server.com  # Add this server to /etc/ssh/ssh_known_hosts
+
+    # Deploy those keys to /root/.ssh
+    keys:
+      id_ed25519: |
+        -----BEGIN OPENSSH PRIVATE KEY-----
+        ...
+        -----END OPENSSH PRIVATE KEY-----
+      id_ed25519.pub: ssh-ed25519 AAAA...

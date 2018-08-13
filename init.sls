@@ -14,7 +14,34 @@ duplicity:
     - pkgs: [duplicity, lftp]
     {% elif 's3' in pillar['duplicity']['backend'] %}
     - pkgs: [duplicity, python-boto]
+    {% elif 'scp://' in pillar['duplicity']['backend'] %}
+    - pkgs: [duplicity, python-paramiko]
     {% endif %}
+
+# Deploy SSH keys
+{% if pillar['duplicity']['ssh'] is defined %}
+/root/.ssh:
+  file.directory:
+    - user: root
+    - group: root
+    - mode: 755
+
+# Append server to ssh_known_hosts
+{% if pillar['duplicity']['ssh']['known_hosts'] is defined %}
+ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_known_hosts:
+  cmd.run:
+    - unless: grep -q {{ pillar['duplicity']['ssh']['known_hosts'] }} /etc/ssh/ssh_known_hosts
+{% endif %}
+
+{% for filename in pillar['duplicity']['ssh']['keys'].keys() %}
+/root/.ssh/{{ filename }}:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 600
+    - contents_pillar: duplicity:ssh:keys:{{ filename }}
+{% endfor %}
+{% endif %}
 
 # Deploy scripts
 /usr/local/bin/duplicity-exec:
