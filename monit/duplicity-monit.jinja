@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# vim: ft=sh
+#
+# This script checks whether the last duplicity backup occurred in a certian timeframe
+
+set -o nounset
+set -o errexit
+
+get_timestamp_diff() {
+  local last_backup_timestamp=$(duplicity-exec collection-status |tail -n4 |head -n1 |awk '{ print $2,$3,$4,$5,$6 }')
+  local last_backup_timestamp_in_seconds=$(date -d "$last_backup_timestamp" '+%s')
+  local unix_timestamp=$(date '+%s')
+  local seconds_since_last_backup=$(expr $unix_timestamp - $last_backup_timestamp_in_seconds)
+
+  echo $seconds_since_last_backup
+}
+
+# Return with exit code 1 if last backup is too old
+if [ $(get_timestamp_diff) -gt {{ max_backup_age }} ]; then
+  exit 1
+fi
+
+exit 0

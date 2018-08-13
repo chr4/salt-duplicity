@@ -20,3 +20,6 @@ duplicity:
   nice: 10
   io_scheduling_class: 2
   io_scheduling_priority: 7
+
+  # Monit settings (used by the duplicity.monit state)
+  max_backup_age: 172800          # Alert if backup is older than max_backup_age seconds
