@@ -101,7 +101,8 @@ duplicity.timer:
     - source: salt://{{ slspath }}/duplicity.timer.jinja
     - template: jinja
     - defaults:
-      on_calendar: {{ pillar['duplicity']['on_calendar']|default('02:00') }}
+      # Escape on_calendar, as e.g. 23:00 is parsed as 1380 otherwise
+      on_calendar: "{{ pillar['duplicity']['on_calendar']|default('02:00') }}"
     - user: root
     - group: root
     - mode: 644
