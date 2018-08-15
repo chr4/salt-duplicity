@@ -11,7 +11,7 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 
-PIDFILE="/tmp/duplicity-cron.pid"
+PIDFILE="/tmp/duplicity-exec.pid"
 if [ -e "$PIDFILE" ]; then
   echo 'Duplicity already running'
   exit 1
@@ -42,6 +42,11 @@ function finish {
   rm -rf "$PIDFILE"
 
   # Unset all passphrases
+  {% if aws_access_key_id != 'None' -%}
+  unset AWS_ACCESS_KEY_ID
+  unset AWS_SECRET_ACCESS_KEY
+  {%- endif %}
+
   unset PASSPHRASE
 }
 trap finish EXIT

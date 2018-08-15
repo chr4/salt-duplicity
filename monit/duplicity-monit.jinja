@@ -5,10 +5,9 @@
 # This script checks whether the last duplicity backup occurred in a certian timeframe
 
 set -o nounset
-set -o errexit
 
 get_timestamp_diff() {
-  local last_backup_timestamp=$(duplicity-exec collection-status |tail -n4 |head -n1 |awk '{ print $2,$3,$4,$5,$6 }')
+  local last_backup_timestamp=$(echo $@ |tail -n4 |head -n1 |awk '{ print $2,$3,$4,$5,$6 }')
   local last_backup_timestamp_in_seconds=$(date -d "$last_backup_timestamp" '+%s')
   local unix_timestamp=$(date '+%s')
   local seconds_since_last_backup=$(expr $unix_timestamp - $last_backup_timestamp_in_seconds)
@@ -16,8 +15,21 @@ get_timestamp_diff() {
   echo $seconds_since_last_backup
 }
 
+# Get duplicity collection status
+collection_status=$(timeout -k 600 300 duplicity-exec collection-status 2> /dev/null )
+if [ $? -ne 0 ]; then
+  echo "duplicity collection-status failed:"
+  echo "$collection_status"
+  echo
+  exit 1
+fi
+
 # Return with exit code 1 if last backup is too old
-if [ $(get_timestamp_diff) -gt {{ max_backup_age }} ]; then
+timestamp_diff=$(echo $collection_status |get_timestamp_diff)
+if [ $timestamp_diff -gt {{ max_backup_age }} ]; then
+  echo "Backup too old (${timestamp_diff}s)"
+  echo "$collection_status"
+  echo
   exit 1
 fi
 
