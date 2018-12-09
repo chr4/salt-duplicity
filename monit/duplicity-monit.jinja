@@ -7,10 +7,15 @@
 set -o nounset
 
 get_timestamp_diff() {
-  local last_backup_timestamp=$(echo $@ |tail -n4 |head -n1 |awk '{ print $2,$3,$4,$5,$6 }')
-  local last_backup_timestamp_in_seconds=$(date -d "$last_backup_timestamp" '+%s')
-  local unix_timestamp=$(date '+%s')
-  local seconds_since_last_backup=$(expr $unix_timestamp - $last_backup_timestamp_in_seconds)
+  local last_backup_timestamp
+  local last_backup_unix
+  local now_unix
+  local seconds_since_last_backup
+
+  last_backup_timestamp=$(grep -B1 '\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-' |tail -n2 |head -n1 |awk '{ print $2,$3,$4,$5,$6 }')
+  last_backup_unix=$(date -d "$last_backup_timestamp" '+%s')
+  now_unix=$(date '+%s')
+  seconds_since_last_backup=$(expr $now_unix - $last_backup_unix)
 
   echo $seconds_since_last_backup
 }
@@ -25,7 +30,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Return with exit code 1 if last backup is too old
-timestamp_diff=$(echo $collection_status |get_timestamp_diff)
+timestamp_diff=$(echo "$collection_status" |get_timestamp_diff)
 if [ $timestamp_diff -gt {{ max_backup_age }} ]; then
   echo "Backup too old (${timestamp_diff}s)"
   echo "$collection_status"
