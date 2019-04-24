@@ -69,6 +69,7 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
       full_if_older_than: {{ pillar['duplicity']['full_if_older_than']|default('30D') }}
       include_dirs: {{ pillar['duplicity']['include_dirs']|default(['/etc', '/root']) }}
       exec_pre: {{ pillar['duplicity']['exec_pre']|default([]) }}
+      exec_post: {{ pillar['duplicity']['exec_post']|default([]) }}
       verify: {{ pillar['duplicity']['verify']|default(true) }}
 
 # Install systemd timer and service
