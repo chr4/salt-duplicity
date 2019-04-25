@@ -21,7 +21,7 @@ get_timestamp_diff() {
 }
 
 # Get duplicity collection status
-collection_status=$(timeout -k 600 300 duplicity-exec collection-status 2> /dev/null )
+collection_status=$(timeout -k 600 300 duplicity-exec collection-status 2> /dev/null)
 if [ $? -ne 0 ]; then
   echo "duplicity collection-status failed:"
   echo "$collection_status"
