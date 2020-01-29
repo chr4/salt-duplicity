@@ -1,7 +1,7 @@
 name: duplicity
 os: Debian, Ubuntu
 os_family: Debian
-version: 202001
+version: 202002
 release: 1
 summary: Formula for installing Duplicity
 description: Formula for installing Duplicity

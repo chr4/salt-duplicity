@@ -30,8 +30,3 @@ Monit needs to be configured e.g. using the salt-monit formula.
     not every "* 1-7 * * *"
     if status != 0 then alert
 ```
-
-
-## Changelog
-
-- Since version `202001`, the formula no longer includes `/root` and `/etc` by default. This was necessary to allow exclude patterns, please adjust your pillars accordingly.
