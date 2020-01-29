@@ -17,24 +17,26 @@ set -o errexit
 # Backup selected directories
 /usr/local/bin/duplicity-exec \
   --full-if-older-than {{ full_if_older_than }} \
-  --exclude-device-files {{ data_dir }} \
-{%- for dir in include_dirs %}
-  --include '{{ dir }}' \
-{%- endfor %}
+  --exclude-device-files / \
 {%- for dir in exclude_dirs %}
   --exclude '{{ dir }}'
 {%- endfor %}
+{%- for dir in include_dirs %}
+  --include '{{ dir }}' \
+{%- endfor %}
+ --exclude '**'
 
 {% if verify %}
 # Verify backup (takes quite a while)
 /usr/local/bin/duplicity-exec verify \
-  --exclude-device-files {{ data_dir }} \
-{%- for dir in include_dirs %}
-  --include '{{ dir }}' \
-{%- endfor %}
+  --exclude-device-files / \
 {%- for dir in exclude_dirs %}
   --exclude '{{ dir }}'
 {%- endfor %}
+{%- for dir in include_dirs %}
+  --include '{{ dir }}' \
+{%- endfor %}
+ --exclude '**'
 {%- endif %}
 
 {% for cmd in exec_post %}

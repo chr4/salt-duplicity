@@ -67,9 +67,8 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
     - defaults:
       remove_all_but_n_full: {{ pillar['duplicity']['remove_all_but_n_full']|default(5) }}
       full_if_older_than: {{ pillar['duplicity']['full_if_older_than']|default('30D') }}
-      data_dir: {{ salt['pillar.get']('duplicity:data_dir', '/') }}
       include_dirs: {{ salt['pillar.get']('duplicity:include_dirs', []) }}
-      exclude_dirs: {{ salt['pillar.get']('duplicity:exclude_dirs', ['**']) }}
+      exclude_dirs: {{ salt['pillar.get']('duplicity:exclude_dirs', []) }}
       exec_pre: {{ pillar['duplicity']['exec_pre']|default([]) }}
       exec_post: {{ pillar['duplicity']['exec_post']|default([]) }}
       verify: {{ pillar['duplicity']['verify']|default(true) }}
