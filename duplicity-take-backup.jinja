@@ -24,7 +24,7 @@ set -o errexit
 {%- for dir in include_dirs %}
   --include '{{ dir }}' \
 {%- endfor %}
- --exclude '**'
+  --exclude '**'
 
 {% if verify %}
 # Verify backup (takes quite a while)
@@ -36,7 +36,7 @@ set -o errexit
 {%- for dir in include_dirs %}
   --include '{{ dir }}' \
 {%- endfor %}
- --exclude '**'
+  --exclude '**'
 {%- endif %}
 
 {% for cmd in exec_post %}
