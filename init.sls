@@ -1,9 +1,9 @@
 # Install duplicity PPA
 duplicity_ppa_repo:
  pkgrepo.managed:
-   - name: deb http://ppa.launchpad.net/duplicity-team/ppa/ubuntu {{ grains['oscodename'] }} main
+   - name: deb http://ppa.launchpad.net/duplicity-team/duplicity-release-git/ubuntu {{ grains['oscodename'] }} main
    - file: /etc/apt/sources.list.d/duplicity.list
-   - keyid: 7A86F4A2
+   - keyid: 8F571BB27A86F4A2
    - keyserver: keyserver.ubuntu.com
    - require_in:
      - pkg: duplicity
