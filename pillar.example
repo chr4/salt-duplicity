@@ -1,12 +1,12 @@
 # vim: ft=sls
 
 duplicity:
-  passphrase: xxxx
+  passphrase: your-super-secret-passphrase
   backend: ftp://user:pass@your-server.com/mybackup
 
   # AWS credentials (only required when S3 is used)
-  aws_access_key_id: XXX
-  aws_secret_access_key: XXX
+  aws_access_key_id: your-access-key-id
+  aws_secret_access_key: your-secret-access-key
 
   # Optional configuration settings (the values used here are the defaults)
   remove_all_but_n_full: 5        # Keep n full backups
@@ -27,7 +27,7 @@ duplicity:
 
   # SSH options
   ssh:
-    known_hosts: your-server.com  # Add this server to /etc/ssh/ssh_known_hosts
+    known_hosts: github.com  # Add this server to /etc/ssh/ssh_known_hosts
 
     # Deploy those keys to /root/.ssh
     keys:
