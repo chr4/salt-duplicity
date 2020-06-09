@@ -1,0 +1,34 @@
+name: 'Saltstack'
+
+on: [push, pull_request]
+
+jobs:
+  saltstack:
+    name: 'Saltstack'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Chef Inspec
+      run: |
+        wget https://packages.chef.io/files/stable/inspec/4.11.3/ubuntu/18.04/inspec_4.11.3-1_amd64.deb
+        sudo dpkg -i inspec_4.11.3-1_amd64.deb
+        rm inspec_4.11.3-1_amd64.deb
+        sudo inspec --chef-license=accept-silent
+
+    - name: Install salt-minion
+      run: |
+        wget -O - http://repo.saltstack.com/py3/ubuntu/18.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+        echo "deb http://repo.saltstack.com/py3/ubuntu/18.04/amd64/latest bionic main" | sudo tee /etc/apt/sources.list.d/saltstack.list
+        sudo apt-get update
+        sudo apt-get install -y salt-minion
+
+    - uses: actions/checkout@v1
+    - name: Apply state
+      run: |
+        sudo mkdir /srv/duplicity
+        sudo cp -r * /srv/duplicity
+        sudo salt-call state.apply \
+          --local --log-file=/dev/null --retcode-passthrough --file-root /srv --pillar-root \
+          /srv/duplicity/tests/pillar duplicity
+
+    - name: Run inspec
+      run: sudo inspec exec tests/integration/duplicity
