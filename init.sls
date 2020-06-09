@@ -13,9 +13,9 @@ duplicity:
     {% if 'ftp://' in pillar['duplicity']['backend'] %}
     - pkgs: [duplicity, lftp]
     {% elif 's3' in pillar['duplicity']['backend'] %}
-    - pkgs: [duplicity, python-boto]
+    - pkgs: [duplicity, python3-boto]
     {% elif 'scp://' in pillar['duplicity']['backend'] %}
-    - pkgs: [duplicity, python-paramiko]
+    - pkgs: [duplicity, python3-paramiko]
     {% endif %}
 
 # Deploy SSH keys
