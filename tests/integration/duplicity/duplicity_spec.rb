@@ -10,6 +10,14 @@ control 'duplicity' do
     its('version') { should cmp >= '0.8.13-ppa202005201506~ubuntu18.04.1' }
   end
 
+  # We're testing with an ftp:// URL, so make sure lftp is also installed
+  #
+  # NOTE: We're not testing s3:// and scp:// URLs, they should install python3-boto and
+  #       python3-paramiko respectively
+  describe package('lftp') do
+    it { should be_installed }
+  end
+
   describe file('/etc/ssh/ssh_known_hosts') do
     its('content') { should match /^github.com ssh-rsa AAAA/ }
   end
