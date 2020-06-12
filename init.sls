@@ -12,6 +12,8 @@ duplicity:
   pkg.installed:
     {% if 'ftp://' in pillar['duplicity']['backend'] %}
     - pkgs: [duplicity, lftp]
+    {% elif 'boto3+s3' in pillar['duplicity']['backend'] %}
+    - pkgs: [duplicity, python3-boto3]
     {% elif 's3' in pillar['duplicity']['backend'] %}
     - pkgs: [duplicity, python3-boto]
     {% elif 'scp://' in pillar['duplicity']['backend'] %}
