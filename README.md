@@ -1,5 +1,7 @@
 # Duplicity salt formula
 
+![Saltstack](https://github.com/chr4/salt-duplicity/workflows/Saltstack/badge.svg)
+
 Install and configure the Duplicity (including systemd timer/ service)
 
 
