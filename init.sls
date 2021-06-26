@@ -58,6 +58,7 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
       aws_secret_access_key: {{ pillar['duplicity']['aws_secret_access_key']|default() }}
       passphrase: {{ pillar['duplicity']['passphrase'] }}
       backend: {{ pillar['duplicity']['backend'] }}
+      args: {{ pillar['duplicity']['args']|default() }}
 
 /usr/local/bin/duplicity-take-backup:
   file.managed:

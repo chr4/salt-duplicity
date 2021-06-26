@@ -3,6 +3,7 @@
 duplicity:
   passphrase: your-super-secret-passphrase
   backend: ftp://user:pass@your-server.com/mybackup
+  args: --s3-endpoint-url https://example.endpoint.com --s3-european-buckets
 
   # AWS credentials (only required when S3 is used)
   aws_access_key_id: your-access-key-id

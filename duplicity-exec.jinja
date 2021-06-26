@@ -26,7 +26,7 @@ export AWS_SECRET_ACCESS_KEY='{{ aws_secret_access_key }}'
 export S3_USE_SIGV4=true # Use new signature version 4
 {%- endif %}
 
-DUPLICITY_ARGUMENTS=(--tempdir /tmp/duplicity-tmp --archive-dir /tmp/duplicity-archive '{{ backend }}')
+DUPLICITY_ARGUMENTS=(--tempdir /tmp/duplicity-tmp --archive-dir /tmp/duplicity-archive {% if args != None %}{{ args }} {% endif %}'{{ backend }}')
 
 # Create directories
 mkdir -p /tmp/duplicity-tmp
