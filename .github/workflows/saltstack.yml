@@ -5,19 +5,19 @@ on: [push, pull_request]
 jobs:
   saltstack:
     name: 'Saltstack'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - name: Install Chef Inspec
       run: |
-        wget https://packages.chef.io/files/stable/inspec/4.20.2/ubuntu/18.04/inspec_4.20.2-1_amd64.deb
-        sudo dpkg -i inspec_4.20.2-1_amd64.deb
-        rm inspec_4.20.2-1_amd64.deb
+        wget https://packages.chef.io/files/stable/inspec/4.41.20/ubuntu/20.04/inspec_4.41.20-1_amd64.deb
+        sudo dpkg -i inspec_4.41.20-1_amd64.deb
+        rm inspec_4.41.20-1_amd64.deb
         sudo inspec --chef-license=accept-silent
 
     - name: Install salt-minion
       run: |
-        wget -O - http://repo.saltstack.com/py3/ubuntu/18.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
-        echo "deb http://repo.saltstack.com/py3/ubuntu/18.04/amd64/latest bionic main" | sudo tee /etc/apt/sources.list.d/saltstack.list
+        wget -O - https://repo.saltproject.io/py3/ubuntu/20.04/amd64/latest/salt-archive-keyring.gpg | sudo apt-key add -
+        echo "deb https://repo.saltproject.io/py3/ubuntu/20.04/amd64/latest focal main" | sudo tee /etc/apt/sources.list.d/saltstack.list
         sudo apt-get update
         sudo apt-get install -y salt-minion
 
