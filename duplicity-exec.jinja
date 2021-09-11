@@ -7,13 +7,13 @@ set -o nounset
 set -o errexit
 
 if [ $# -lt 1 ]; then
-  echo "Usage: $0 <duplicity command>"
+  >&2 echo "Usage: $0 <duplicity command>"
   exit 1
 fi
 
 PIDFILE="/tmp/duplicity-exec.pid"
 if [ -e "$PIDFILE" ]; then
-  echo 'Duplicity already running'
+  >&2 echo 'Duplicity already running'
   exit 1
 fi
 
@@ -38,7 +38,7 @@ export HOME=/root
 # Touch pidfile, remove it on exit/ error
 touch "$PIDFILE"
 function finish {
-  echo 'Removing pidfile'
+  >&2 echo 'Removing pidfile'
   rm -rf "$PIDFILE"
 
   # Unset all passphrases
