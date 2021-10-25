@@ -59,6 +59,8 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
       passphrase: {{ pillar['duplicity']['passphrase'] }}
       backend: {{ pillar['duplicity']['backend'] }}
       args: {{ pillar['duplicity']['args']|default() }}
+      tempdir: {{ pillar['duplicity']['tempdir']|default('/tmp/duplicity-tmp') }}
+      archive_dir: {{ pillar['duplicity']['archive_dir']|default('/tmp/duplicity-archive') }}
 
 /usr/local/bin/duplicity-take-backup:
   file.managed:
