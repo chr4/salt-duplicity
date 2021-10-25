@@ -74,7 +74,7 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
       exclude_dirs: {{ salt['pillar.get']('duplicity:exclude_dirs', []) }}
       exec_pre: {{ pillar['duplicity']['exec_pre']|default([]) }}
       exec_post: {{ pillar['duplicity']['exec_post']|default([]) }}
-      verify: {{ pillar['duplicity']['verify']|default(true) }}
+      verify: {{ pillar['duplicity']['verify']|default(false) }}
 
 # Install systemd timer and service
 /lib/systemd/system/duplicity.service:

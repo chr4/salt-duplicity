@@ -15,7 +15,7 @@ duplicity:
   include_dirs: ['/etc', '/root'] # Include these directories
   exec_pre: ['pg_dumpall']        # Commands to run before taking the backup (e.g. pg_dump, etc)
   exec_post: ['cleanup']          # Commands to run after taking the backup (e.g. cleanup commands, etc)
-  verify: true                    # Verify backups
+  verify: false                   # Verify backups (downloads backup to /tmp, which might fill up)
 
   # Systemd timer settings
   on_calendar: 02:00
