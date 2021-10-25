@@ -11,7 +11,7 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 
-PIDFILE="/tmp/duplicity-exec.pid"
+PIDFILE="/run/duplicity-exec.pid"
 if [ -e "$PIDFILE" ]; then
   >&2 echo 'Duplicity already running'
   exit 1
