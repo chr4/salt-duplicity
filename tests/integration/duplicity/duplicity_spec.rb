@@ -46,13 +46,13 @@ control 'duplicity' do
     its('content') { should match /cleanup/ }
   end
 
-  describe file('/lib/systemd/system/duplicity.service') do
+  describe file('/etc/systemd/system/duplicity.service') do
     its('content') { should match /Nice=10/ }
     its('content') { should match /IOSchedulingClass=2/ }
     its('content') { should match /IOSchedulingPriority=7/ }
   end
 
-  describe file('/lib/systemd/system/duplicity.timer') do
+  describe file('/etc/systemd/system/duplicity.timer') do
     its('content') { should match /OnCalendar=02:00/ }
   end
 

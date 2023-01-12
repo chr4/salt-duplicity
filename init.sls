@@ -79,7 +79,7 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
       verify: {{ pillar['duplicity']['verify']|default(true) }}
 
 # Install systemd timer and service
-/lib/systemd/system/duplicity.service:
+/etc/systemd/system/duplicity.service:
   file.managed:
     - source: salt://{{ tpldir }}/duplicity.service.jinja
     - template: jinja
@@ -93,18 +93,18 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
   cmd.run:
     - name: systemctl daemon-reload
     - onchanges:
-      - file: /lib/systemd/system/duplicity.service
+      - file: /etc/systemd/system/duplicity.service
 
 duplicity.timer:
   service.running:
     - enable: true
     - watch:
-      - file: /lib/systemd/system/duplicity.timer
+      - file: /etc/systemd/system/duplicity.timer
     - require:
-      - file: /lib/systemd/system/duplicity.timer
+      - file: /etc/systemd/system/duplicity.timer
       - cmd: systemctl daemon-reload
   file.managed:
-    - name: /lib/systemd/system/duplicity.timer
+    - name: /etc/systemd/system/duplicity.timer
     - source: salt://{{ tpldir }}/duplicity.timer.jinja
     - template: jinja
     - defaults:
@@ -116,4 +116,4 @@ duplicity.timer:
   cmd.run:
     - name: systemctl daemon-reload
     - onchanges:
-      - file: /lib/systemd/system/duplicity.timer
+      - file: /etc/systemd/system/duplicity.timer
