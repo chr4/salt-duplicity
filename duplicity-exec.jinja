@@ -64,3 +64,7 @@ case $cmd in
   duplicity "$@" ${DUPLICITY_ARGUMENTS[@]}
   ;;
 esac
+
+# Clean temporary directories to avoid pile up over time
+rm -rf "{{ tempdir }}"
+rm -rf "{{ archive_dir }}"
