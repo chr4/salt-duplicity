@@ -51,7 +51,7 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
     - user: root
     - group: root
     - mode: 700
-    - source: salt://{{ tpldir }}/duplicity-exec.jinja
+    - source: salt://{{ tpldir }}/files/duplicity-exec.jinja
     - template: jinja
     - defaults:
       aws_access_key_id: {{ pillar['duplicity']['aws_access_key_id']|default() }}
@@ -67,7 +67,7 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
     - user: root
     - group: root
     - mode: 755
-    - source: salt://{{ tpldir }}/duplicity-take-backup.jinja
+    - source: salt://{{ tpldir }}/files/duplicity-take-backup.jinja
     - template: jinja
     - defaults:
       remove_all_but_n_full: {{ pillar['duplicity']['remove_all_but_n_full']|default(5) }}
@@ -81,7 +81,7 @@ ssh-keyscan {{ pillar['duplicity']['ssh']['known_hosts'] }} >> /etc/ssh/ssh_know
 # Install systemd timer and service
 /etc/systemd/system/duplicity.service:
   file.managed:
-    - source: salt://{{ tpldir }}/duplicity.service.jinja
+    - source: salt://{{ tpldir }}/files/duplicity.service.jinja
     - template: jinja
     - defaults:
       nice: {{ pillar['duplicity']['nice']|default('10') }}
@@ -105,7 +105,7 @@ duplicity.timer:
       - cmd: systemctl daemon-reload
   file.managed:
     - name: /etc/systemd/system/duplicity.timer
-    - source: salt://{{ tpldir }}/duplicity.timer.jinja
+    - source: salt://{{ tpldir }}/files/duplicity.timer.jinja
     - template: jinja
     - defaults:
       # Escape on_calendar, as e.g. 23:00 is parsed as 1380 otherwise
