@@ -10,10 +10,13 @@ control 'duplicity' do
     its('version') { should cmp >= '0.8.13-ppa202005201506~ubuntu18.04.1' }
   end
 
-  # We're testing with an ftp:// URL, so make sure lftp is also installed
-  #
-  # NOTE: We're not testing s3:// and scp:// URLs, they should install python3-boto and
-  #       python3-paramiko respectively
+  # We're testing with an ftp://, s3:// and boto3+s3:// URL, so make sure all needed packages are installed
+  describe package('python3-boto3') do
+    it { should be_installed }
+  end
+  describe package('python3-boto') do
+    it { should be_installed }
+  end
   describe package('lftp') do
     it { should be_installed }
   end
@@ -34,7 +37,46 @@ control 'duplicity' do
     its('content') { should match /PASSPHRASE='your-super-secret-passphrase'/ }
     its('content') { should match /AWS_ACCESS_KEY_ID='your-access-key-id'/ }
     its('content') { should match /AWS_SECRET_ACCESS_KEY='your-secret-access-key'/ }
-    its('content') { should match /ftp:\/\/user:pass@your-server.com\/mybackup/ }
+  end
+
+  describe 'multi.json file validation' do
+    let(:json_file) { File.read('/etc/duplicity/multi.json') }
+    let(:parsed_json) { JSON.parse(json_file) }
+    let(:expected_json_string) { <<~JSON
+      [
+        {
+          "description": "Main AWS S3 bucket",
+          "url": "boto3+s3://main-backup/subdir",
+          "env": [
+            {
+            "name" : "AWS_ACCESS_KEY_ID",
+            "value" : "xyz"
+            },
+            {
+            "name" : "AWS_SECRET_ACCESS_KEY",
+            "value" : "bar"
+            }
+          ]
+        },
+        {
+          "description": "Seconday AWS S3 bucket",
+          "url": "s3://secondary-backup/subdir"
+        },
+        {
+          "description": "Any FTP backend",
+          "url": "ftp://user:pass@your-server.com/mybackup"
+        }
+      ]
+    JSON
+    }
+  
+    it 'should be valid JSON' do
+      expect { parsed_json }.not_to raise_error
+    end
+  
+    it 'should match the expected JSON string' do
+      expect(json_file).to eq(expected_json_string)
+    end
   end
 
   describe file('/usr/local/bin/duplicity-take-backup') do

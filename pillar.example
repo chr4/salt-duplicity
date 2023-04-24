@@ -2,9 +2,39 @@
 
 duplicity:
   passphrase: your-super-secret-passphrase
-  backend: ftp://user:pass@your-server.com/mybackup
-  args: --s3-endpoint-url https://example.endpoint.com --s3-european-buckets
+  # FTP example
+  # backend: ftp://user:pass@your-server.com/mybackup
 
+  # Multi example
+  # First bucket will use other credentials the the default AWS credentials provided below
+  backend: multi:///etc/duplicity/multi.json?mode=mirror&onfail=abort
+  multi_config: |
+    [
+      {
+        "description": "Main AWS S3 bucket",
+        "url": "boto3+s3://main-backup/subdir",
+        "env": [
+          {
+          "name" : "AWS_ACCESS_KEY_ID",
+          "value" : "xyz"
+          },
+          {
+          "name" : "AWS_SECRET_ACCESS_KEY",
+          "value" : "bar"
+          }
+        ]
+      },
+      {
+        "description": "Seconday AWS S3 bucket",
+        "url": "s3://secondary-backup/subdir"
+      },
+      {
+        "description": "Any FTP backend",
+        "url": "ftp://user:pass@your-server.com/mybackup"
+      }
+    ]
+
+  # args: --s3-endpoint-url https://example.endpoint.com --s3-european-buckets
   # AWS credentials (only required when S3 is used)
   aws_access_key_id: your-access-key-id
   aws_secret_access_key: your-secret-access-key
