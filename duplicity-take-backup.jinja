@@ -15,7 +15,7 @@ set -o errexit
 {%- endfor %}
 
 # Backup selected directories
-/usr/local/bin/duplicity-exec \
+/usr/local/bin/duplicity-exec incremental \
   --full-if-older-than {{ full_if_older_than }} \
   --exclude-device-files / \
 {%- for dir in exclude_dirs %}
