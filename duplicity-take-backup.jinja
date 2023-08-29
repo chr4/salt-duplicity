@@ -10,8 +10,10 @@ set -o errexit
 /usr/local/bin/duplicity-exec remove-all-but-n-full {{ remove_all_but_n_full }} --force
 /usr/local/bin/duplicity-exec cleanup --force
 
+# Render newlines properly in multi-line commands
+# https://github.com/saltstack/salt/issues/30690
 {% for cmd in exec_pre %}
-{{ cmd }}
+{{ cmd|replace('\\n','\n') }}
 {%- endfor %}
 
 # Backup selected directories
@@ -40,5 +42,5 @@ set -o errexit
 {%- endif %}
 
 {% for cmd in exec_post %}
-{{ cmd }}
+{{ cmd|replace('\\n','\n') }}
 {%- endfor %}
