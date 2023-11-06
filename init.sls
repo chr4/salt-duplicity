@@ -10,15 +10,33 @@ duplicity_ppa_repo:
 
 duplicity:
   pkg.installed:
-    {% if 'ftp://' in pillar['duplicity']['backend'] %}
-    - pkgs: [duplicity, lftp]
-    {% elif 'boto3+s3' in pillar['duplicity']['backend'] %}
-    - pkgs: [duplicity, python3-boto3]
-    {% elif 's3' in pillar['duplicity']['backend'] %}
-    - pkgs: [duplicity, python3-boto]
-    {% elif 'scp://' in pillar['duplicity']['backend'] %}
-    - pkgs: [duplicity, python3-paramiko]
+    - pkgs:
+      - duplicity
+    {% if 'ftp://' in pillar['duplicity']['backend'] or 'ftp://' in pillar['duplicity']['multi_config'] %}
+      - lftp
     {% endif %}
+    {% if 'boto3+s3://' in pillar['duplicity']['backend'] or 'boto3+s3://' in pillar['duplicity']['multi_config'] %}
+      - python3-boto3
+    {% endif %}
+    {% if 's3' in pillar['duplicity']['backend'] or 's3' in pillar['duplicity']['multi_config'] %}
+      - python3-boto
+    {% endif %}
+    {% if 'scp://' in pillar['duplicity']['backend'] or 'scp://' in pillar['duplicity']['multi_config'] %}
+      - python3-paramiko
+    {% endif %}
+
+# Insert duplicity multi configuration
+{% if 'multi://' in pillar['duplicity']['backend'] %}
+# Deploy scripts
+/etc/duplicity/multi.json:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 700
+    - makedirs: true
+    - contents_pillar: duplicity:multi_config
+    - serializer: json
+{% endif %}
 
 # Deploy SSH keys
 {% if pillar['duplicity']['ssh'] is defined %}
